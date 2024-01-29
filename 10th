@@ -1,0 +1,41 @@
+import java.sql.*;
+
+public class studentdata {
+    private static final String url = "jdbc:mysql://localhost:3306/student";
+    private static final String us = "root";
+    private static final String pass = "";
+
+    public static void main(String[] args) {
+        try (Connection connection = DriverManager.getConnection(url, us, pass)) {
+            Statement statement = connection.createStatement();
+
+            // insert
+            String createQuery = "INSERT INTO stud(id, name, age) VALUES (1, 'rak', 22);";
+            statement.executeUpdate(createQuery);
+            System.out.println("created");
+
+            // read
+            String readQuery = "SELECT * FROM stud;";
+            ResultSet resultSet = statement.executeQuery(readQuery);
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String name = resultSet.getString("name");
+                int age = resultSet.getInt("age");
+                System.out.println(id + " " + name + " " + age);
+            }
+
+            // update
+            String updateQuery = "UPDATE stud SET age = 20 WHERE name = 'rak';";
+            statement.executeUpdate(updateQuery);
+            System.out.println("updated");
+
+            // delete
+            String delQuery = "DELETE FROM stud WHERE name = 'rak';";
+            statement.executeUpdate(delQuery);
+            System.out.println("deleted");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
+java -cp "C:\Users\Dell\Desktop\mysql-connector-j-8.3.0\mysql-connector-j-8.3.0\mysql-connector-j-8.3.0.jar" studentdata.java
